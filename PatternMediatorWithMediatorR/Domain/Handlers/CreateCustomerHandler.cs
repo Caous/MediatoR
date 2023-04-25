@@ -20,7 +20,7 @@ public class CreateCustomerHandler : IRequestHandler<CreateCustomerRequest, Crea
         // Aplicar Fail Fast Validations
 
         // Cria a entidade
-        var customer = new Customer(request.Name, request.LastName, request.Email);
+        var customer = new Customer(Guid.Empty, request.Name, request.LastName, request.Email);
 
         // Persiste a entidade no banco
         _repository.Save(customer);

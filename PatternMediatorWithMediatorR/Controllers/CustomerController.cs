@@ -5,7 +5,7 @@ using PatternMediatorWithMediatorR.Domain.Handlers;
 using PatternMediatorWithMediatorR.Domain.Queries.Requests;
 using System.Text.Json;
 
-namespace PatternMediatorWithMediatorR.Properties
+namespace PatternMediatorWithMediatorR.Controllers
 {
     [ApiController]
     [Route("customers")]
@@ -19,6 +19,7 @@ namespace PatternMediatorWithMediatorR.Properties
         }
 
 
+
         [HttpPost]
         public IActionResult Post([FromBody] CreateCustomerRequest command)
         {
@@ -26,10 +27,32 @@ namespace PatternMediatorWithMediatorR.Properties
             return Ok(response);
         }
 
-        [HttpGet]
+        [HttpGet("GetId")]
         public IActionResult Get([FromQuery] FindCustomerByIdRequest command)
         {
+            var result = _mediator.Send(command);
+            return Ok(JsonSerializer.Serialize(result));
+        }
 
+        [HttpPut]
+        public IActionResult Put([FromQuery] UpdateCustomerRequest command)
+        {
+            var result = _mediator.Send(command);
+            return Ok(JsonSerializer.Serialize(result));
+        }
+
+        [HttpDelete]
+        public IActionResult Delete([FromQuery] DeleteCustomerRequest command)
+        {
+            if (_mediator.Send(command).IsCompletedSuccessfully)
+                return Ok();
+
+            return BadRequest();
+        }
+
+        [HttpGet("GetAll")]
+        public IActionResult GetAll([FromQuery] FindAllCustomerRequest command)
+        {
             var result = _mediator.Send(command);
             return Ok(JsonSerializer.Serialize(result));
         }

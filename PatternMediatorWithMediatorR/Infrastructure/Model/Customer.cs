@@ -2,9 +2,13 @@
 
 public class Customer
 {
-    public Customer(string name, string lastName, string email)
-    {
-        this.Id = Guid.NewGuid();
+    public Customer(Guid id, string name, string lastName, string email)
+    {   
+        if (id == null || id.Equals(Guid.Empty))
+            this.Id = Guid.NewGuid();
+        else
+            this.Id = id;
+        
         this.LastName = lastName;
         this.Email = email;
         this.Name = name;
