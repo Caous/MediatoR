@@ -7,6 +7,7 @@ global using System.Text.Json;
 global using PatternMediatorWithMediatorR.Domain.Commands.Request;
 global using PatternMediatorWithMediatorR.Domain.Queries.Requests;
 global using PatternMediatorWithMediatorR.Domain.Commands.Response;
+global using PatternMediatorWithMediatorR.Domain.Notifications;
 
 //Dependecy Infrastructure
 global using PatternMediatorWithMediatorR.Infrastructure.Model;
