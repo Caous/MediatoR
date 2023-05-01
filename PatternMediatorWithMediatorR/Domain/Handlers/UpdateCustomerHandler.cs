@@ -1,18 +1,12 @@
-﻿using MediatR;
-using PatternMediatorWithMediatorR.Domain.Commands.Request;
-using PatternMediatorWithMediatorR.Domain.Commands.Response;
-using PatternMediatorWithMediatorR.Infrastructure.Model;
-using PatternMediatorWithMediatorR.Infrastructure.Repository;
-
-namespace PatternMediatorWithMediatorR.Domain.Handlers
+﻿namespace PatternMediatorWithMediatorR.Domain.Handlers
 {
     public class UpdateCustomerHandler : IRequestHandler<UpdateCustomerRequest, UpdateCustomerResponse>
     {
         IRepository<Customer> _repository;
 
-        public UpdateCustomerHandler()
+        public UpdateCustomerHandler(IRepository<Customer> repository)
         {
-            _repository = new CustomerRepository();
+            _repository = repository;
         }
 
         public Task<UpdateCustomerResponse> Handle(UpdateCustomerRequest request, CancellationToken cancellationToken)

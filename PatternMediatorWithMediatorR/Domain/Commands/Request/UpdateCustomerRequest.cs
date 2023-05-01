@@ -1,7 +1,4 @@
-﻿using MediatR;
-using PatternMediatorWithMediatorR.Domain.Commands.Response;
-
-namespace PatternMediatorWithMediatorR.Domain.Commands.Request;
+﻿namespace PatternMediatorWithMediatorR.Domain.Commands.Request;
 
 public class UpdateCustomerRequest : IRequest<UpdateCustomerResponse>
 {

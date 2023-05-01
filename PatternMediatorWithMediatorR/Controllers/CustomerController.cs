@@ -1,11 +1,4 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using PatternMediatorWithMediatorR.Domain.Commands.Request;
-using PatternMediatorWithMediatorR.Domain.Handlers;
-using PatternMediatorWithMediatorR.Domain.Queries.Requests;
-using System.Text.Json;
-
-namespace PatternMediatorWithMediatorR.Controllers
+﻿namespace PatternMediatorWithMediatorR.Controllers
 {
     [ApiController]
     [Route("customers")]
@@ -17,8 +10,6 @@ namespace PatternMediatorWithMediatorR.Controllers
         {
             _mediator = mediator;
         }
-
-
 
         [HttpPost]
         public IActionResult Post([FromBody] CreateCustomerRequest command)
@@ -44,10 +35,15 @@ namespace PatternMediatorWithMediatorR.Controllers
         [HttpDelete]
         public IActionResult Delete([FromQuery] DeleteCustomerRequest command)
         {
-            if (_mediator.Send(command).IsCompletedSuccessfully)
+            try
+            {
+                _mediator.Publish(command);
                 return Ok();
-
-            return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("GetAll")]

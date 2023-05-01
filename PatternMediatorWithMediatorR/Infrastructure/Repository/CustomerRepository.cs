@@ -1,15 +1,23 @@
-﻿using PatternMediatorWithMediatorR.Infrastructure.Model;
-
-namespace PatternMediatorWithMediatorR.Infrastructure.Repository;
+﻿namespace PatternMediatorWithMediatorR.Infrastructure.Repository;
 
 public class CustomerRepository : IRepository<Customer>
 {
     public CustomerRepository()
     {
-        
     }
 
-    private static Dictionary<Guid, Customer> Customers = new Dictionary<Guid, Customer>();
+    private static Dictionary<Guid, Customer> InstanceCustomerClient()
+    {
+        var clientOne = new Customer(Guid.NewGuid(), "Admin", "Sys", "admin@email.com.br");
+        var clientTwo = new Customer(Guid.NewGuid(), "Suport", "Sys", "suport@email.com.br");
+        var clientThree = new Customer(Guid.NewGuid(), "Sale", "Sys", "sale@email.com.br");
+
+        return new Dictionary<Guid, Customer>() { { clientOne.Id, clientOne }, { clientTwo.Id, clientTwo }, { clientThree.Id, clientThree} };
+    }
+
+
+        
+    private static Dictionary<Guid, Customer> Customers = InstanceCustomerClient();
 
     public async Task<IEnumerable<Customer>> GetAll()
     {

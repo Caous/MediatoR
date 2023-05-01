@@ -1,9 +1,5 @@
-﻿using MediatR;
-using PatternMediatorWithMediatorR.Domain.Queries.Responses;
+﻿namespace PatternMediatorWithMediatorR.Domain.Queries.Requests;
 
-namespace PatternMediatorWithMediatorR.Domain.Queries.Requests
+public class FindAllCustomerRequest : IRequest<FindAllCustomerResponse>
 {
-    public class FindAllCustomerRequest : IRequest<FindAllCustomerResponse>
-    {
-    }
 }

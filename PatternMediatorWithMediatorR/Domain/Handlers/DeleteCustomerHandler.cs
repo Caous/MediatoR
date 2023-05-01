@@ -1,18 +1,13 @@
-﻿using MediatR;
-using PatternMediatorWithMediatorR.Domain.Commands.Request;
-using PatternMediatorWithMediatorR.Infrastructure.Model;
-using PatternMediatorWithMediatorR.Infrastructure.Repository;
-
-namespace PatternMediatorWithMediatorR.Domain.Handlers;
+﻿namespace PatternMediatorWithMediatorR.Domain.Handlers;
 
 public class DeleteCustomerHandler : IRequestHandler<DeleteCustomerRequest>
 {
 
     IRepository<Customer> _repository;
 
-    public DeleteCustomerHandler()
+    public DeleteCustomerHandler(IRepository<Customer> repository)
     {
-        _repository = new CustomerRepository();
+        _repository = repository;
     }
     public Task Handle(DeleteCustomerRequest request, CancellationToken cancellationToken)
     {

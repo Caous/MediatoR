@@ -1,18 +1,12 @@
-﻿using MediatR;
-using PatternMediatorWithMediatorR.Domain.Queries.Requests;
-using PatternMediatorWithMediatorR.Domain.Queries.Responses;
-using PatternMediatorWithMediatorR.Infrastructure.Model;
-using PatternMediatorWithMediatorR.Infrastructure.Repository;
-
-namespace PatternMediatorWithMediatorR.Domain.Handlers;
+﻿namespace PatternMediatorWithMediatorR.Domain.Handlers;
 
 public class FindCustomerByIdHandler : IRequestHandler<FindCustomerByIdRequest, FindCustomerByIdResponse>
 {
     IRepository<Customer> _repository;
 
-    public FindCustomerByIdHandler()
+    public FindCustomerByIdHandler(IRepository<Customer> repository)
     {
-        _repository = new CustomerRepository();
+        _repository = repository;
     }
 
     public async Task<FindCustomerByIdResponse> Handle(FindCustomerByIdRequest request, CancellationToken cancellationToken)

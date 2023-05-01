@@ -1,6 +1,4 @@
-﻿using PatternMediatorWithMediatorR.Infrastructure.Model;
-
-namespace PatternMediatorWithMediatorR.Domain.Queries.Responses;
+﻿namespace PatternMediatorWithMediatorR.Domain.Queries.Responses;
 
 public class FindAllCustomerResponse
 {

@@ -1,6 +1,4 @@
-﻿using MediatR;
-
-namespace PatternMediatorWithMediatorR.Domain.Commands.Request;
+﻿namespace PatternMediatorWithMediatorR.Domain.Commands.Request;
 
 public class DeleteCustomerRequest : IRequest
 {
