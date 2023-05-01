@@ -37,7 +37,7 @@
         {
             try
             {
-                _mediator.Publish(command);
+                _mediator.Send(command);
                 return Ok();
             }
             catch (Exception ex)

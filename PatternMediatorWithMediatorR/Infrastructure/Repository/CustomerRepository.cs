@@ -24,7 +24,7 @@ public class CustomerRepository : IRepository<Customer>
         return await Task.Run(() => Customers.Values.ToList());
     }
 
-    public async Task<Customer> Get(Guid id)
+    public async Task<Customer?> Get(Guid id)
     {
         return await Task.Run(() => Customers.GetValueOrDefault(id));
     }

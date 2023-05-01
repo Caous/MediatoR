@@ -2,5 +2,5 @@
 
 public class FindAllCustomerResponse
 {
-    public IEnumerable<Customer> AllCustomer { get; set; }
+    public IEnumerable<Customer>? AllCustomer { get; set; }
 }
