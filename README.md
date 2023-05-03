@@ -1,12 +1,12 @@
 # Framework MediatR 
 
-Projeto com finalidade em mostrar a implementação do Framework MediatR disponível para tecnologias Microsoft
+Projeto com finalidade em mostrar a implementação do Framework MediatR disponível para tecnologias Microsoft.
 
 ![Command](https://refactoring.guru/images/patterns/content/command/command-comic-1.png?id=551df832f445080976f3116e0dc120c9)
 
 
 ### <h2>Fala Dev, seja muito bem-vindo
-   Está POC é para mostrar como podemos implementar o <b>Framework MediatR</b> em diversos projetos com adaptação para o cenário que você precisar ou até mesmo combinação de Patterns diferentes, também te explico o que é o Mediatr e como usar em diversas situações. Espero que encontre o que procura <img src="https://media.giphy.com/media/WUlplcMpOCEmTGBtBW/giphy.gif" width="30"> 
+   Está POC é para mostrar como podemos implementar o <b>Framework MediatR</b> em diversos projetos, com adaptação para o cenário que você precisa, ou até mesmo combinação de Patterns diferentes, também te explico o que é o MediatR e como usar em diversas situações. Espero que encontre o que procura. <img src="https://media.giphy.com/media/WUlplcMpOCEmTGBtBW/giphy.gif" width="30"> 
 </em></p></h5>
   
   </br>
@@ -20,13 +20,16 @@ Projeto com finalidade em mostrar a implementação do Framework MediatR dispon�
 
 ### <h2>MediatR <a href="https://github.com/jbogard/MediatR" target="_blank"><img alt="MediatR" src="https://img.shields.io/badge/MediatR-blue?style=flat&logo=google-chrome"></a>
 
- <a href="https://jimmybogard.com/tag/mediatr/" target="_blank">Framework MediatR </a> uma biblioteca desenvolvida por Jimmy Bogard o mesmo criador do AutoMapper <b> combina o Design Pattern Mediator, juntamente com Command e mais alguns, para chegar a uma implementação sucinta e fácil para nossos códigos</b>, sendo assim podemos fazer diversas implementações com benefícios de desacoplamento de código seguindo um dos principios de SOLID.
+ <a href="https://jimmybogard.com/tag/mediatr/" target="_blank">Framework MediatR </a> uma biblioteca desenvolvida por Jimmy Bogard o mesmo criador do AutoMapper <b> combina o Design Pattern Mediator, juntamente com Command e mais alguns, para chegar a uma implementação sucinta e fácil para os nossos códigos</b>, sendo assim podemos fazer diversas implementações com benefícios de desacoplamento de código e seguindo um dos principios do SOLID.
  
-Esse padrão de projeto pode ser utilizado <b>INDIFERENTE DA LINGUAGEM DE PROGRAMAÇÃO</b>, ou seja, pode ser aplicado em qualquer lugar. Mas fica um <b>Ponto de Atenção</b> para vocês, só implementem realmente se fizer sentido.
- 
-Design Pattern Command tem como objetivo utilizar um pedido da aplicação para transformar em um objeto, recebendo os parâmetros para aquele objeto. Essa transformação permite que você parametrize métodos com diferentes pedidos, atrase ou coloque a execução do pedido em uma fila, e suporte operações que não podem ser feitas.
+<b>Objetivo MediatR</b> Pense que você tem um sistema que contém diversos setores (Telas), esses setores trabalham com suas regras que vamos denominar aqui de: <b>Regra de Negócio ou Domain</b>, sendo assim pense que a Tela A necessita de um processamento ou até mesmo de uma informação que só contém na Tela B, cada tela contém sua regra de negócio, desta forma precisamos nos comunicar entre eles, agora pense em um sistema muito grande, por exemplo um e-commerce o um sistema bancário, que contém diversas regras, validações etc... Para nosso código não ficar aquela salada de fruta aonde a Tela A vai conhecer a Tela B, Tela G, Tela Z, podemos ter um centralizador, ou como falamos um mediador, onde ele será responsável por chamar cada parte do sistema, sendo assim evitamos acoplamentos enormes, o mediador irá conhecer todas as telas, mas cada tela conhece-rá apenas o mediador.
+   
+Sendo assim costumo dizer que o MediatR contêm dois Patterns principais implementados nele:
+   
+   <b>[Design Pattern Mediator]</b> tem como objetivo centralizar códigos que precisam de complemento de outros, ou seja, uma ação quando solicitada, precisar processar outro código/classe, ao invés de termos uma classe chamando a outra, temos um centralizador. Desta forma pense que o Mediator é uma forma de arbitro pronto para orquestra o jogo da forma que precisa, ele é responsável por cada ação que acontece, ou seja, se uma falta for cometida ele dá um cartão, advertência, se alguém for ser trocado durante o jogo, ele também irá orquestrar e chamar os responsáveis para tal ação acontecer com sucesso.
+   
+   <b>[Design Pattern Command]</b> tem como objetivo utilizar um pedido da aplicação para transformar em um objeto, recebendo os parâmetros para aquele objeto. Essa transformação permite que você parametrize métodos com diferentes pedidos, atrase ou coloque a execução do pedido em uma fila, e suporte operações que não podem ser feitas.
 
-   Desta forma podemos pensar na <b>segregação de responsabilidades</b>, aonde por exemplo um front-end se necessitar mostrar ao usuário a rota até sua casa, logo ele precisa passar o processamento para o back-end que contem toda regra de negócio. Desta forma ao <b>invés do back-end acessar diretamente a classe ou intermediador passando os parâmetros, ele envia um pedido do tipo Rota, passando a origem e chegada, e o back-end fica responsável pelo restante</b>. De agora em diante, o objeto <b>GUI não precisa saber qual objeto de lógica do negócio irá receber o pedido e como ele vai ser processado</b>. O objeto GUI deve acionar o comando, que irá lidar com todos os detalhes então podemos ter diversos pontos chamando o mesmo comando ou comandos diferentes.
    
  Agora vamos te explicar a nível de código, nossa estrutura se divide em algumas camadas como:
    
