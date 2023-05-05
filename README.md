@@ -26,7 +26,7 @@ Projeto com finalidade em mostrar a implementação do Framework MediatR dispon�
    
 O MediatR trabalha basicamente temos dois componentes principais chamados de Request e Handler, que implementamos através das interfaces IRequest e IRequestHandler<TRequest> respectivamente.
 
-   <b>Request → mensagem que será processada.</b>
+   <b>Request → mensagem que será processada.</b><br>
    <b>Handler → responsável por processar determinada(s) mensagen(s).</b>
    
 Não confunda o Request do MediatR com um request HTTP. Request é o nome usado pelo MediatR para descrever uma mensagem que será processada por um Handler. Além disso, algumas literaturas usam o termo Command para descrever essas mensagens, eu mesmo ainda uso esse termo de vez em quando.
