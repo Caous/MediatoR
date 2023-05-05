@@ -6,7 +6,7 @@ Projeto com finalidade em mostrar a implementação do Framework MediatR dispon�
 
 
 ### <h2>Fala Dev, seja muito bem-vindo
-   Está POC é para mostrar como podemos implementar o <b>Framework MediatR</b> em diversos projetos, com adaptação para o cenário que você precisa, ou até mesmo combinação de Patterns diferentes, também te explico o que é o MediatR e como usar em diversas situações. Espero que encontre o que procura. <img src="https://media.giphy.com/media/WUlplcMpOCEmTGBtBW/giphy.gif" width="30"> 
+   Está POC é para mostrar como podemos implementar o <b>Framework MediatR</b> em diversos projetos, com adaptação para o cenário que você precisa, ou até mesmo combinação de Patterns diferentes, também te explico <b>o que é o MediatR</b> e como usar em diversas situações. Espero que encontre o que procura. <img src="https://media.giphy.com/media/WUlplcMpOCEmTGBtBW/giphy.gif" width="30"> 
 </em></p></h5>
   
   </br>
@@ -20,9 +20,9 @@ Projeto com finalidade em mostrar a implementação do Framework MediatR dispon�
 
 ### <h2>MediatR <a href="https://github.com/jbogard/MediatR" target="_blank"><img alt="MediatR" src="https://img.shields.io/badge/MediatR-blue?style=flat&logo=google-chrome"></a>
 
- <a href="https://jimmybogard.com/tag/mediatr/" target="_blank">Framework MediatR </a> uma biblioteca desenvolvida por Jimmy Bogard o mesmo criador do AutoMapper <b> combina o Design Pattern Mediator, juntamente com Command e mais alguns, para chegar a uma implementação sucinta e fácil para os nossos códigos</b>, sendo assim podemos fazer diversas implementações com benefícios de desacoplamento de código e seguindo um dos principios do SOLID.
+ <a href="https://jimmybogard.com/tag/mediatr/" target="_blank">Framework MediatR </a> uma biblioteca desenvolvida por Jimmy Bogard o mesmo <b>criador do AutoMapper, MediatR combina o Design Pattern Mediator, juntamente com Command e mais alguns, para chegar a uma implementação sucinta e fácil para os nossos códigos</b>, sendo assim podemos fazer diversas implementações com benefícios de desacoplamento de código e seguindo um dos princípios do SOLID.
  
-<b>Objetivo MediatR</b> Pense que você tem um sistema que contém diversos setores (Telas), esses setores trabalham com suas regras que vamos denominar aqui de: <b>Regra de Negócio ou Domain</b>, sendo assim pense que a Tela A necessita de um processamento ou até mesmo de uma informação que só contém na Tela B, cada tela contém sua regra de negócio, desta forma precisamos nos comunicar entre eles, agora pense em um sistema muito grande, por exemplo um e-commerce o um sistema bancário, que contém diversas regras, validações etc... Para nosso código não ficar aquela salada de fruta aonde a Tela A vai conhecer a Tela B, Tela G, Tela Z, podemos ter um centralizador, ou como falamos um mediador, onde ele será responsável por chamar cada parte do sistema, sendo assim evitamos acoplamentos enormes, o mediador irá conhecer todas as telas, mas cada tela conhece-rá apenas o mediador.
+<b>Objetivo MediatR</b> Pense que você tem um sistema que contém diversas <b>TELAS</b>, essas telas trabalham com suas regras que vamos denominar aqui de  <b>Regra de Negócio ou Domain</b>, sendo assim pense que a Tela A necessita de um processamento ou até mesmo de uma informação que só contém na Tela B, cada tela contém sua regra de negócio, desta forma precisamos nos comunicar entre eles, mas <b>como vamos se comunicas sem que a tela A conheça a Tela B?</b>, agora pense em um sistema muito grande, por exemplo um e-commerce, um sistema bancário, que contém diversas regras, validações etc... Para nosso código não ficar aquela salada de fruta aonde a Tela A vai conhecer a Tela B, Tela G, Tela Z, podemos ter um centralizador, ou como falamos um mediador, onde ele será responsável por chamar cada parte do sistema, sempre que solicitado, sendo assim evitamos acoplamentos enormes e seguimos princípios de programação, o mediador irá conhecer todas as telas, mas cada tela conhecerá apenas o mediador.
    
 Sendo assim costumo dizer que o MediatR contêm dois Patterns principais implementados nele:
    
@@ -35,11 +35,11 @@ Legal né? Mas agora a pergunta é como posso usar o Command? Abaixo dou um exem
 </br></br>
 
 ### <h2>[Cenário de Uso]
-Vamos imaginar o seguinte cenário, você tem uma API Rest <b>que gerencia seu cliente</b>, desta forma, sendo assim você precisa fazer várias coisas com seu cliente, como <b>alterar, cadastrar, excluir, listar, filtrar etc...</b> Então vamos colocar a mão na massa para esse código rodar
+Vamos imaginar o seguinte cenário, você tem uma API Rest <b>que gerencia seu cliente</b>, desta forma, você precisa fazer várias alterações com seu cliente, como <b>alterar, cadastrar, excluir, listar, filtrar etc...</b> Então vamos colocar a mão na massa para esse código rodar
 
 ### <h2> Criação de Classes
 
-Vamos criar a classe command que é responsável por iniciar e configurar os commandos
+Vamos criar a classe de request que chegara por meio de um comando, configuramos também o seu retorno colocando a interface do MediatR IRequest, ela é responsável para o MediatR procurar suas classes equivalentes.
 ```C#
 public class CreateCustomerRequest : IRequest<CreateCustomerResponse>
 {
@@ -49,7 +49,7 @@ public class CreateCustomerRequest : IRequest<CreateCustomerResponse>
 }
 ```
 
-Próxima etapa é criarmos interface com os comandos que teremos.
+Próxima etapa é criarmos o Handler no caso o nosso manipulador que será responsável por executar a criação do nosso usuário.
 ```C#
 
 public class CreateCustomerHandler : IRequestHandler<CreateCustomerRequest, CreateCustomerResponse>
@@ -79,44 +79,59 @@ public class CreateCustomerHandler : IRequestHandler<CreateCustomerRequest, Crea
 ```
 </br>
 
-Agora vamos criar as classes que vão conter a implementação dos comandos mas não a verdadeira regra de negócio
+Por ultimo criamos nossa Controller com o método de criar usuário
 ```C#
-  [HttpPost]
+[ApiController]
+    [Route("customers")]
+    public class CustomerController : Controller
+    {
+        private readonly IMediator _mediator;
+
+        public CustomerController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+        
+        [HttpPost]
         public IActionResult Post([FromBody] CreateCustomerRequest command)
         {
             var response = _mediator.Send(command);
             return Ok(response);
         }
+     }
 ```
 
-E <b> neste caso não criamos uma receive por não ter necessidade de abstrair a regra de negócio</b> por ultimo a implementação.
+Não podemos esquecer de configurar nosso Program.Cs para reconhecer e injetar o MediatR em nossa aplicação
 
 ```C#
-Alexa invoke = new Alexa();
+var builder = WebApplication.CreateBuilder(args);
 
-Guid guid = Guid.NewGuid();
+// Add services to the container.
 
-invoke.SetStarCommand(new CoffePotCommand(new Coffe(guid, ETypeCoffe.Express)));
+builder.Services.AddControllers();
+builder.Services.AddScoped<IRepository<Customer>,CustomerRepository>();
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
-invoke.ExecuteCommand();
+var app = builder.Build();
 
-invoke.UndoCommand();
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
-guid = Guid.NewGuid();
+app.UseHttpsRedirection();
 
-invoke.SetStarCommand(new TvCommand(new Tv(guid, "bedroom")));
+app.UseAuthorization();
 
-invoke.ExecuteCommand();
+app.MapControllers();
 
-invoke.UndoCommand();
+app.Run();
 
-guid = Guid.NewGuid();
-
-invoke.SetStarCommand(new LightOnCommand(new Light(guid, "bathroom")));
-
-invoke.ExecuteCommand();
-
-invoke.UndoCommand();
 
 ```
 
