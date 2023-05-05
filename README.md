@@ -13,7 +13,7 @@ Projeto com finalidade em mostrar a implementação do Framework MediatR dispon�
   
 
 
-<img align="right" src="https://refactoring.guru/images/patterns/content/command/command-pt-br.png?id=36096f8c2cd7783284eb80ce92db1a96" width="400" height="400"/>
+<img align="right" src="https://methodpoet.com/wp-content/uploads/2022/06/mediator-pattern-solution.png" width="300" height="300"/>
 
 
 </br></br>
@@ -24,12 +24,22 @@ Projeto com finalidade em mostrar a implementação do Framework MediatR dispon�
  
 <b>Objetivo MediatR</b> Pense que você tem um sistema que contém diversas <b>TELAS</b>, essas telas trabalham com suas regras que vamos denominar aqui de  <b>Regra de Negócio ou Domain</b>, sendo assim pense que a Tela A necessita de um processamento ou até mesmo de uma informação que só contém na Tela B, cada tela contém sua regra de negócio, desta forma precisamos nos comunicar entre eles, mas <b>como vamos se comunicas sem que a tela A conheça a Tela B?</b>, agora pense em um sistema muito grande, por exemplo um e-commerce, um sistema bancário, que contém diversas regras, validações etc... Para nosso código não ficar aquela salada de fruta aonde a Tela A vai conhecer a Tela B, Tela G, Tela Z, podemos ter um centralizador, ou como falamos um mediador, onde ele será responsável por chamar cada parte do sistema, sempre que solicitado, sendo assim evitamos acoplamentos enormes e seguimos princípios de programação, o mediador irá conhecer todas as telas, mas cada tela conhecerá apenas o mediador.
    
+O MediatR trabalha basicamente temos dois componentes principais chamados de Request e Handler, que implementamos através das interfaces IRequest e IRequestHandler<TRequest> respectivamente.
+
+   <b>Request → mensagem que será processada.</b>
+   <b>Handler → responsável por processar determinada(s) mensagen(s).</b>
+   
+Não confunda o Request do MediatR com um request HTTP. Request é o nome usado pelo MediatR para descrever uma mensagem que será processada por um Handler. Além disso, algumas literaturas usam o termo Command para descrever essas mensagens, eu mesmo ainda uso esse termo de vez em quando.
+   
 Sendo assim costumo dizer que o MediatR contêm dois Patterns principais implementados nele:
    
    <b>[Design Pattern Mediator]</b> tem como objetivo centralizar códigos que precisam de complemento de outros, ou seja, uma ação quando solicitada, precisar processar outro código/classe, ao invés de termos uma classe chamando a outra, temos um centralizador. Desta forma pense que o Mediator é uma forma de arbitro pronto para orquestra o jogo da forma que precisa, ele é responsável por cada ação que acontece, ou seja, se uma falta for cometida ele dá um cartão, advertência, se alguém for ser trocado durante o jogo, ele também irá orquestrar e chamar os responsáveis para tal ação acontecer com sucesso.
    
    <b>[Design Pattern Command]</b> tem como objetivo utilizar um pedido da aplicação para transformar em um objeto, recebendo os parâmetros para aquele objeto. Essa transformação permite que você parametrize métodos com diferentes pedidos, atrase ou coloque a execução do pedido em uma fila, e suporte operações que não podem ser feitas.   
 
+
+   
+   
 Legal né? Mas agora a pergunta é como posso usar o Command? Abaixo dou um exemplo de caso de uso.
 
 </br></br>
