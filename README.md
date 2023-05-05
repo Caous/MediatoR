@@ -28,119 +28,65 @@ Sendo assim costumo dizer que o MediatR contêm dois Patterns principais impleme
    
    <b>[Design Pattern Mediator]</b> tem como objetivo centralizar códigos que precisam de complemento de outros, ou seja, uma ação quando solicitada, precisar processar outro código/classe, ao invés de termos uma classe chamando a outra, temos um centralizador. Desta forma pense que o Mediator é uma forma de arbitro pronto para orquestra o jogo da forma que precisa, ele é responsável por cada ação que acontece, ou seja, se uma falta for cometida ele dá um cartão, advertência, se alguém for ser trocado durante o jogo, ele também irá orquestrar e chamar os responsáveis para tal ação acontecer com sucesso.
    
-   <b>[Design Pattern Command]</b> tem como objetivo utilizar um pedido da aplicação para transformar em um objeto, recebendo os parâmetros para aquele objeto. Essa transformação permite que você parametrize métodos com diferentes pedidos, atrase ou coloque a execução do pedido em uma fila, e suporte operações que não podem ser feitas.
-
-   
- Agora vamos te explicar a nível de código, nossa estrutura se divide em algumas camadas como:
-   
-   °<b>Invoker</b> é responsável por iniciar os pedidos. Essa classe deve ter um campo para armazenar a referência para um objeto comando. O remetente aciona aquele comando ao invés de enviar o pedido diretamente para o destinatário.
-   
-   °<b>Interface Command</b> com objetivo de ter apenas um único método que é executar o command <b> algumas pessoas utilizam com mais um comando UNDO</b>, para cancelar o pedido
-   
-   °<b>Comandos Concretos</b> implementam vários tipos de pedidos. Um comando concreto não deve realizar o trabalho por conta própria, mas passar a chamada para um dos objetos da lógica do negócio. Contudo, para simplificar o código, essas classes podem ser fundidas.
-   
-   °<b>Destinatária</b> contém a lógica do negócio. Quase qualquer objeto pode servir como um destinatário.
-   
-   °<b>Client</b> cria e configura objetos comando concretos. O cliente deve passar todos os parâmetros do pedido, incluindo uma instância do destinatário, para o construtor do comando. Após isso, o comando resultante pode ser associado com um ou múltiplos destinatários.
-   
+   <b>[Design Pattern Command]</b> tem como objetivo utilizar um pedido da aplicação para transformar em um objeto, recebendo os parâmetros para aquele objeto. Essa transformação permite que você parametrize métodos com diferentes pedidos, atrase ou coloque a execução do pedido em uma fila, e suporte operações que não podem ser feitas.   
 
 Legal né? Mas agora a pergunta é como posso usar o Command? Abaixo dou um exemplo de caso de uso.
 
 </br></br>
 
 ### <h2>[Cenário de Uso]
-Vamos imaginar o seguinte cenário, você tem uma <b>casa com diversar integrações com seus objetos</b>, desta forma, você sempre passa <b>comandos para serem executados</b> como você deseja, desta forma chegando ao objetivo que você deseja, ligar uma tomada ou até mesmo ligar a luz do quarto e desligar do banheiro. Como você poderia fazer esses comandos serem interpretados com parametros e suas particularidades. Esse é o objetivo do Command, executar o seu pedido e outra camada ficar responsável pela verdadeira regra de negócio.
+Vamos imaginar o seguinte cenário, você tem uma API Rest <b>que gerencia seu cliente</b>, desta forma, sendo assim você precisa fazer várias coisas com seu cliente, como <b>alterar, cadastrar, excluir, listar, filtrar etc...</b> Então vamos colocar a mão na massa para esse código rodar
 
 ### <h2> Criação de Classes
 
 Vamos criar a classe command que é responsável por iniciar e configurar os commandos
 ```C#
-  public class Alexa
+public class CreateCustomerRequest : IRequest<CreateCustomerResponse>
 {
-    private ICommand _command;
-
-    public void SetStarCommand(ICommand starCommand) => _command = starCommand;
-    public void ExecuteCommand() => _command.Execute();
-    public void UndoCommand() => _command.Undo();
-
+    public string Name { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
 }
 ```
 
 Próxima etapa é criarmos interface com os comandos que teremos.
 ```C#
 
- public interface ICommand
-  {
-    void Execute();
-    void Undo();
-  }
+public class CreateCustomerHandler : IRequestHandler<CreateCustomerRequest, CreateCustomerResponse>
+{
+    private readonly IRepository<Customer> _repository;
+
+    public CreateCustomerHandler(IRepository<Customer> repository)
+    {
+        _repository = repository;
+    }
+
+    public Task<CreateCustomerResponse> Handle(CreateCustomerRequest request, CancellationToken cancellationToken)
+    {
+        var customer = new Customer(Guid.Empty, request.Name, request.LastName, request.Email);
+
+        _repository.Save(customer);
+
+        return Task.Run(() => new CreateCustomerResponse
+        {
+            Id = customer.Id,
+            Name = customer.Name,
+            Email = customer.Email,
+            DateRegister = customer.DateRegister
+        });
+    }
+}
 ```
 </br>
 
 Agora vamos criar as classes que vão conter a implementação dos comandos mas não a verdadeira regra de negócio
 ```C#
-  public class CoffePotCommand : ICommand
-   {
-    private readonly Coffe coffe;
-
-    public CoffePotCommand(Coffe coffe)
-    {
-        this.coffe = coffe;
-    }
-    public void Execute()
-    {
-        coffe.SetOnOrOffCoffe(true);
-        Console.WriteLine($"Coffe Id: { coffe.Id} status : {coffe.GetOnOrOfCoffe()} and start type Coffe: {coffe.TypeCoffe}");
-    }
-
-    public void Undo()
-    {
-        coffe.SetOnOrOffCoffe(false);
-        Console.WriteLine($"Coffe Id: {coffe.Id} status : {coffe.GetOnOrOfCoffe()}");
-    }
-   }
-   
-   public class LightOnCommand : ICommand
-   {
-    private readonly Light light;
-
-    public LightOnCommand(Light light)
-    {
-        this.light = light;
-    }
-    public void Execute()
-    {
-        light.SetOnOrOffLight(true);
-        Console.WriteLine($"Id: {light.Id} light of Enviroment: {light.Enviroments} this {light.GetOnOrOfLight()}");
-    }
-
-    public void Undo()
-    {
-        light.SetOnOrOffLight(false);
-        Console.WriteLine($"Id: {light.Id} light of Enviroment: {light.Enviroments} this {light.GetOnOrOfLight()}");
-    }
-   }
-
-   public class TvCommand : ICommand
-   {
-    private readonly Tv tv;
-
-    public TvCommand(Tv tv)
-    {
-        this.tv = tv;
-    }
-    public void Execute()
-    {
-        tv.SetOnOrOffTv(true);
-        Console.WriteLine($"Id: {tv.Id} TV of Enviroment: {tv.Enviroments} this {tv.GetOnOrOfTv()}");
-    }
-
-    public void Undo()
-    {
-        tv.SetOnOrOffTv(false);
-        Console.WriteLine($"Id: {tv.Id} TV of Enviroment: {tv.Enviroments} this {tv.GetOnOrOfTv()}");
-    }
-   }
+  [HttpPost]
+        public IActionResult Post([FromBody] CreateCustomerRequest command)
+        {
+            var response = _mediator.Send(command);
+            return Ok(response);
+        }
 ```
 
 E <b> neste caso não criamos uma receive por não ter necessidade de abstrair a regra de negócio</b> por ultimo a implementação.
