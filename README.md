@@ -2,7 +2,8 @@
 
 Projeto com finalidade em mostrar a implementação do Framework MediatR disponível para tecnologias Microsoft.
 
-![Command](https://refactoring.guru/images/patterns/content/command/command-comic-1.png?id=551df832f445080976f3116e0dc120c9)
+![MediatR](https://user-images.githubusercontent.com/38294660/236552188-58a48d2d-5927-4b41-b0dc-942495a443a6.png)
+
 
 
 ### <h2>Fala Dev, seja muito bem-vindo
